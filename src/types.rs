@@ -2,7 +2,16 @@ use pyo3::prelude::*;
 
 #[pyclass]
 pub struct Integer {
+    #[pyo3(get, set)]
     inner: i32,
+}
+
+#[pymethods]
+impl Integer {
+    #[new]
+    fn new(value: i32) -> Integer {
+        Integer { inner: value }
+    }
 }
 
 // A "tuple" struct
