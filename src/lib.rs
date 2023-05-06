@@ -1,5 +1,7 @@
 use pyo3::prelude::*;
 
+mod types;
+
 /// Formats the sum of two numbers as string.
 #[pyfunction]
 fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
@@ -17,8 +19,14 @@ fn register_child_module(py: Python<'_>, parent_module: &PyModule) -> PyResult<(
 /// the `lib.name` setting in the `Cargo.toml`, else Python will not be able to
 /// import the module.
 #[pymodule]
+#[pyo3(name = "py_rust_playground")] // python package name
 fn py_rust_playground(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+
+    m.add_class::<types::Integer>()?;
+    m.add_class::<types::Number>()?;
+    m.add_class::<types::HttpResponse>()?;
+    m.add_class::<types::MyEnum>()?;
 
     register_child_module(_py, m)?;
     Ok(())
